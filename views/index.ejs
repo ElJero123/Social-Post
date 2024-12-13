@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with backend</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        background-color: #0f0f0f;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container-logout {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .form-container {
+        color: white;
+        background-color: #191919;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 350px;
+    }
+
+    .form-container-logout {
+        color: white;
+        background-color: #191919;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 350px;
+    }
+
+    form h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .icon-container {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: #ffffff;
+        display: flex;
+        line-height: 0;
+    }
+
+    .icon-container > h2 {
+        margin-left: 5px;
+        font-family: "Playwrite GB S", cursive;
+        font-optical-sizing: auto;
+        font-weight: 10px;
+        font-style: normal;
+    }
+
+    .size-6 {
+        width: 15px;
+        height: 15px;   
+    }
+
+    .size-7 {
+        width: 30px;
+        height: 30px;
+        color: white;
+    }
+    
+    .size-8 {
+        width: 48px;
+        height: 48px;
+        color: white;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        background-color: #121212;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button {
+        border: none;
+        padding: 10px;
+        margin-top: 15px;
+        border-radius: 9px;
+        background-color: #037df0;
+        color: white;
+        width: 100%;
+    }
+
+    .settings {
+        color: white;
+        background-color: #191919;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        margin: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: fit-content;
+    }
+
+    .container-comments {
+        height: 100vh;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        border-top: 1px solid rgb(180, 180, 180);
+    }
+
+    .container-comments > .comments {
+        border-right: 1px solid rgb(180, 180, 180);
+        max-width: 100%;
+    }
+
+    .form-comment {
+        padding: 10px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 0;
+        gap: 10px;
+    }
+
+    .form-comment > button {
+        width: 100px;
+        margin: 0;
+    }
+
+    .settings > span {
+        margin-left: 10px;
+    }
+    
+    .header-container {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .list-messages {
+        list-style: none;
+        color: white;
+        padding: 0;
+        margin: 0;
+    }
+
+    .list-messages > li {
+        border-bottom: 1px solid rgb(180, 180, 180);
+        padding: 10px;
+        max-width: 100%; 
+        overflow-wrap: break-word; 
+        word-wrap: break-word; 
+        white-space: normal; 
+    }
+
+    .list-messages > li > p {
+        font-weight: bold;
+    }
+
+    .list-messages > li > p,
+    .list-messages > li > span {
+        margin: 5px 0; 
+        word-break: break-word; 
+    }
+
+    button:hover {
+        background-color: #1f6eb8;
+    }
+
+    #btn-like {
+        width: 15px;
+        height: 15px;
+        background-color: transparent;
+        cursor: pointer;
+        margin: 0;
+        padding: 0;
+    }
+
+    .num-likes {
+        margin-right: 25px;
+    }
+
+    #btn-refresh {
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        background-color: transparent;
+    }
+
+    #created-at-comment {
+        font-weight: 500;
+        font-size: 9px;
+    }
+
+    .most-liked-comments {
+        border-bottom: 1px solid rgb(180, 180, 180);
+        max-width: 100%; 
+        overflow-wrap: break-word; 
+        word-wrap: break-word; 
+        white-space: normal;
+    }
+
+    .most-liked-comments h2 {
+        color: white;
+        text-align: center;
+        line-height: normal;
+        text-decoration: underline;
+    }
+
+    @media (min-width: 750px) {
+        .container {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .form-container {
+            min-height: 350px;
+        }
+
+        #login-form > h2 {
+            margin-bottom: 30px;
+        }
+
+        #login-form > button {
+            margin-top: 67px;
+        }
+    }
+</style>
+<body>
+    <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+        </svg>
+        <h2>Social post</h2> 
+    </div>   
+    
+        <% if (typeof username !== 'undefined') { %>
+            <header class="header-container">
+                <div class="settings">
+                    <a href="/settings">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.894.149c-.424.07-.764.383-.929.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.398.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                    </a>
+                </div>
+            </header>
+
+            <div class="container-comments">
+                <section class="comments">
+                    <form class="form-comment" id="form-comment">
+                        <input type="text" placeholder="type a message" class="inp-comment" id="inp-comment">
+                        <button type="submit">Enviar</button>
+                    </form>
+                    <ul id="list-messages" class="list-messages"></ul>
+                </section>
+                <section class="most-liked-comments">
+                    <h2>Most Liked Posts: </h2> 
+                    <span>
+                        <button id="btn-refresh">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                            </svg>
+                        </button>
+                    </span>
+                    <ul id="list-ml-messages" class="list-messages"></ul>
+                </section>
+            </div>
+
+        <% } else { %>
+        <div class="container-logout">   <!-- Si username no está definido (usuario no logueado) -->
+            <div class="form-container">
+                <form id="login-form">
+                    <h2>Login</h2>
+                    <label for="login-username">Username: <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6" width="14" height="10">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+                      </svg>
+                    </label>
+                    <input type="text" id="login-username" name="username" required>
+                    
+                    <label for="login-password">Password: <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="14" height="14" viewBox="0 0 24 24" style="padding-top: 3px; color: white;" stroke="currentColor">
+                        <path d="M 12 1 C 8.6761905 1 6 3.6761905 6 7 L 6 8 C 4.9069372 8 4 8.9069372 4 10 L 4 20 C 4 21.093063 4.9069372 22 6 22 L 18 22 C 19.093063 22 20 21.093063 20 20 L 20 10 C 20 8.9069372 19.093063 8 18 8 L 18 7 C 18 3.6761905 15.32381 1 12 1 z M 12 3 C 14.27619 3 16 4.7238095 16 7 L 16 8 L 8 8 L 8 7 C 8 4.7238095 9.7238095 3 12 3 z M 6 10 L 18 10 L 18 20 L 6 20 L 6 10 z M 12 13 C 10.9 13 10 13.9 10 15 C 10 16.1 10.9 17 12 17 C 13.1 17 14 16.1 14 15 C 14 13.9 13.1 13 12 13 z"></path>
+                      </svg>
+                    </label>
+                    <input type="password" id="login-password" name="password" required>
+    
+                    <button type="submit">Login</button>
+                    <span>&nbsp;</span>
+                </form>    
+            </div>
+    
+            <div class="form-container">
+                <form id="register-form">
+                    <h2>Register</h2>
+                    <label for="register-username">Username: <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6" width="14" height="10">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+                      </svg>
+                    </label>
+                    <input type="text" id="register-username" name="username" required>
+    
+                    <label for="register-password">Password: <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="14" height="14" viewBox="0 0 24 24" style="padding-top: 3px; color: white;" stroke="currentColor">
+                        <path d="M 12 1 C 8.6761905 1 6 3.6761905 6 7 L 6 8 C 4.9069372 8 4 8.9069372 4 10 L 4 20 C 4 21.093063 4.9069372 22 6 22 L 18 22 C 19.093063 22 20 21.093063 20 20 L 20 10 C 20 8.9069372 19.093063 8 18 8 L 18 7 C 18 3.6761905 15.32381 1 12 1 z M 12 3 C 14.27619 3 16 4.7238095 16 7 L 16 8 L 8 8 L 8 7 C 8 4.7238095 9.7238095 3 12 3 z M 6 10 L 18 10 L 18 20 L 6 20 L 6 10 z M 12 13 C 10.9 13 10 13.9 10 15 C 10 16.1 10.9 17 12 17 C 13.1 17 14 16.1 14 15 C 14 13.9 13.1 13 12 13 z"></path>
+                      </svg>
+                    </label>
+                    <input type="password" id="register-password" name="password" required>
+    
+                    <label for="register-confirm-password">Confirm password: <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="14" height="14" viewBox="0 0 24 24" style="padding-top: 3px; color: white;" stroke="currentColor">
+                        <path d="M 12 1 C 8.6761905 1 6 3.6761905 6 7 L 6 8 C 4.9069372 8 4 8.9069372 4 10 L 4 20 C 4 21.093063 4.9069372 22 6 22 L 18 22 C 19.093063 22 20 21.093063 20 20 L 20 10 C 20 8.9069372 19.093063 8 18 8 L 18 7 C 18 3.6761905 15.32381 1 12 1 z M 12 3 C 14.27619 3 16 4.7238095 16 7 L 16 8 L 8 8 L 8 7 C 8 4.7238095 9.7238095 3 12 3 z M 6 10 L 18 10 L 18 20 L 6 20 L 6 10 z M 12 13 C 10.9 13 10 13.9 10 15 C 10 16.1 10.9 17 12 17 C 13.1 17 14 16.1 14 15 C 14 13.9 13.1 13 12 13 z"></path>
+                      </svg>
+                    </label>
+                    <input type="password" id="register-confirm-password" name="password" required>
+                    <button type="submit">Register</button>
+                    <span>&nbsp;</span>
+                </form>
+            </div>
+        <% } %>
+    </div>
+    
+    <script type="module">
+        import { io } from 'https://cdn.socket.io/4.8.0/socket.io.esm.min.js'
+
+        const $ = el => document.querySelector(el)
+    
+        const loginForm = $('#login-form')
+        const loginSpan = $('#login-form span')
+    
+        const registerForm = $('#register-form')
+        const registerSpan = $('#register-form span')
+    
+        const logoutButton = $('#close-session')
+        const formMessages = $('#form-comment')
+        const listMessages = $('#list-messages')
+        const inpMessages = $('#inp-comment')
+        const listMlMessages = $('#list-ml-messages')
+        const btnLike = $('#btn-like')
+        const btnRefresh = $('#btn-refresh')
+        
+        const socket = io({
+            auth: {
+                serverOffSet: 0
+            }
+        })
+
+        // socket
+
+        formMessages?.addEventListener('submit', e => {
+            e.preventDefault()
+
+            if (inpMessages.value) {
+                socket.emit('message', inpMessages.value)
+                inpMessages.value = ''
+            }
+        })
+
+        listMessages?.addEventListener('click', e => {
+            if (e.target.closest('#btn-like')) {
+                const button = e.target.closest('#btn-like')
+                const commentId = button.dataset.commentId
+                
+                socket.emit('like', commentId)
+            }
+        })
+
+        socket.on('like', (numLikes, commentId) => {
+            const currLikes = $(`#num-likes-of-comment-${commentId}`)
+            const button = $('#btn-like')
+
+            currLikes.innerHTML = numLikes
+        })
+
+        socket.on('message', (msg, serverOffSet, username, likes, actualTime) => {
+            const item = `<li><p>${username}</p><span>${msg}</span> <p><button id="btn-like" data-comment-id="${serverOffSet}"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" /></svg>
+            </button><span id="num-likes-of-comment-${serverOffSet}" class="num-likes">${likes}</span><span id="created-at-comment">${actualTime}</span></p></li>`
+            
+            listMessages.insertAdjacentHTML('beforeend', item)
+            socket.auth.serverOffSet = serverOffSet
+        })
+
+
+        // fin del codigo sobre el socket
+
+        // most liked comments
+
+        setTimeout(() => socket.emit('most-liked'))
+
+        socket.on('most-liked', (msg, commentId, username, likes, postCommentTime) => {
+            const item = `<li><p>${username}</p><span>${msg}</span> 
+            <p> Likes: 
+            <span id="num-likes-of-comment-${commentId}" class="num-likes">${likes}</span>
+            <span id="created-at-comment">${postCommentTime}</span></p></li>`
+            
+            listMlMessages.insertAdjacentHTML('beforeend', item)
+        })
+
+        // end of most liked comments
+    
+        loginForm?.addEventListener('submit', e => {
+            e.preventDefault()
+            const username = $('#login-username').value
+            const password = $('#login-password').value
+    
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => {
+                if (res.ok) {
+                    loginSpan.innerText = 'Sesion iniciada... Entrando...'
+                    loginSpan.style.color = 'green'
+                    setTimeout(() => {
+                        window.location.href = '/protected'
+                    }, 2000) 
+                } else {
+                    loginSpan.innerText = 'Error al inciar sesion'
+                    loginSpan.style.color = 'red'
+                }
+            })
+        })
+    
+        registerForm?.addEventListener('submit', e => {
+            e.preventDefault()
+
+            const username = $('#register-username').value
+            const password = $('#register-password').value
+            const confirmPassword = $('#register-confirm-password').value
+    
+            if (password !== confirmPassword) {
+                alert('Passwords dont match')
+                return
+            }
+    
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => {
+                if (res.ok) {
+                    registerSpan.innerText = 'Usuario registrado. Puedes iniciar sesion'
+                    registerSpan.style.color = 'green'
+                } else {
+                    registerSpan.innerText = 'Error al registrar el usuario, el usuario posiblemente ya exista o la contraseña es invalida, recuerda que el minimo de caracteres en la contraseña es de 8 y en el usuario es de 4'
+                    registerSpan.style.color = 'red'
+                }
+            })
+        })
+
+        // socket 
+
+    </script>    
+</body>
+</html>
