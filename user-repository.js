@@ -5,20 +5,20 @@ import { configObject, SALT_ROUNDS } from './config.js'
 
 const connection = await mysql.createConnection(configObject)
 
-const [User] = await connection.query(`
-  SELECT * FROM users
-`)
-
 export class UserRepository {
   static async login ({ username, password }) {
     ValidateUser({ username, password })
-    const user = User.find(name => name.username === username)
-    if (!user) throw new Error('User does not exists')
 
-    const isValidPassword = bcrypt.compare(password, user.password)
+    const [user] = await connection.query(`
+      SELECT * FROM users WHERE username = ?;
+    `, [username])
+
+    if (user.length === 0) throw new Error('User does not exists')
+
+    const isValidPassword = bcrypt.compare(password, user[0].password)
     if (!isValidPassword) throw new Error('Password is incorrect')
 
-    const { password: _, ...publicUser } = user
+    const { password: _, ...publicUser } = user[0]
 
     return publicUser
   }
@@ -26,8 +26,11 @@ export class UserRepository {
   static async register ({ username, password }) {
     const result = ValidateUser({ username, password })
 
-    const user = User.find(name => name.username === username)
-    if (user) throw new Error('username already exists')
+    const [user] = await connection.query(`
+      SELECT * FROM users WHERE username = ?;
+    `, [username])
+
+    if (user.length > 0) throw new Error('username already exists')
     const hashPassword = await bcrypt.hash(password, SALT_ROUNDS)
 
     await connection.query(`
@@ -35,7 +38,11 @@ export class UserRepository {
       (?, ?);
     `, [result.data.username, hashPassword])
 
-    return { id: User._id }
+    const [id] = await connection.query(`
+      SELECT BIN_TO_UUID(_id) id FROM users WHERE username = ?
+    `, [username])
+
+    return { id: id[0].id }
   }
 
   static async addComment ({ id, msg }) {
